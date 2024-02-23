@@ -37,7 +37,7 @@ class UserControllerTest extends TestCase
             'name' => 'Test User',
             'email' => 'test@example.com',
             'password' => 'password',
-            'roles' => 'user',
+            'roles_id' => 'users',
         ]);
 
         $response->assertStatus(201)

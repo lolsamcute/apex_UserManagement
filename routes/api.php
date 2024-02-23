@@ -2,8 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\WalletController;
-use App\Http\Middleware\ApiKeyAuthMiddleware;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,12 +21,16 @@ use App\Http\Middleware\ApiKeyAuthMiddleware;
 // });
 
 
-Route::post('/register', [WalletController::class, 'register']);
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
 
-Route::middleware([ApiKeyAuthMiddleware::class])->group(function () {
-    Route::post('/users/{userId}/wallets', [WalletController::class, 'createWallet']);
-    Route::post('/wallets/{walletId}/credit', [WalletController::class, 'creditWallet']);
-    Route::post('/wallets/{walletId}/debit', [WalletController::class, 'debitWallet']);
-    Route::get('/wallets/{walletId}/transactions', [WalletController::class, 'getTransactionHistory']);
+Route::middleware('auth:api')->group(function () {
+    Route::get('/users', [UserController::class, 'index']);
+    Route::get('/users/{user}', [UserController::class, 'show']);
 
+    Route::middleware(['admin'])->group(function () {
+        Route::post('/users', [UserController::class, 'store']);
+        Route::put('/users/{user}', [UserController::class, 'update']);
+        Route::delete('/users/{user}', [UserController::class, 'destroy']);
+    });
 });

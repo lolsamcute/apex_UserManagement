@@ -11,12 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('transactions', function (Blueprint $table) {
+        Schema::create('roles', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('wallet_id');
-            $table->enum('type', ['credit', 'debit']);
-            $table->decimal('amount', 10, 2);
-            $table->string('reference')->unique();
+            $table->string('name')->unique();
             $table->timestamps();
         });
     }
@@ -26,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('transactions');
+        Schema::dropIfExists('roles');
     }
 };

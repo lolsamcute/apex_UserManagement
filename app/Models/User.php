@@ -6,7 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
+use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable
 {
@@ -20,8 +20,8 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
-        'api_key',
         'password',
+        'roles'
     ];
 
     /**
@@ -43,4 +43,9 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function isAdmin()
+    {
+        return $this->roles === 'admin';
+    }
 }
